@@ -6,7 +6,11 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
 
-image_num = 0
+Queue = []
+
+Q_NUM =5
+
+# image_num = 0
 # For webcam input:
 cap = cv2.VideoCapture(0)
 with mp_hands.Hands(
@@ -39,20 +43,25 @@ with mp_hands.Hands(
     # Draw the hand annotations on the image.
     image.flags.writeable = True
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    # if results.multi_hand_landmarks:
+    #   for hand_landmarks in results.multi_hand_landmarks:
+    #     # print(hand_landmarks)
+    #     mp_drawing.draw_landmarks(
+    #         image,
+    #         hand_landmarks,
+    #         mp_hands.HAND_CONNECTIONS,
+    #         mp_drawing_styles.get_default_hand_landmarks_style(),
+    #         mp_drawing_styles.get_default_hand_connections_style())
+    
+    # 손이 하나 이상 발견하면 첫줄 어팬드, 그렇지 않으면 None 어팬드
     if results.multi_hand_landmarks:
-      for hand_landmarks in results.multi_hand_landmarks:
-        # print(hand_landmarks)
-        mp_drawing.draw_landmarks(
-            image,
-            hand_landmarks,
-            mp_hands.HAND_CONNECTIONS,
-            mp_drawing_styles.get_default_hand_landmarks_style(),
-            mp_drawing_styles.get_default_hand_connections_style())
-    if results.multi_hand_landmarks:
-      for k, (mlh, hand_landmarks) in enumerate(zip(results.multi_handedness, results.multi_hand_landmarks)):
-        print(k)
-        if  mlh.classification[0].label == "Right":
-          pass
+      Queue.append(zip(results.multi_handedness, results.multi_hand_landmarks))
+    else:
+      Queue.append(None)
+      # for k, (mlh, hand_landmarks) in enumerate(zip(results.multi_handedness, results.multi_hand_landmarks)):
+      #   print(k)
+        # if  mlh.classification[0].label == "Right":
+        #   LM_Q.append(hand_landmarks)
           # print(hand_landmarks)
           # print(mlh.classification[0])
           # if mlh.classification[0].score < 0.6:
@@ -60,6 +69,22 @@ with mp_hands.Hands(
           #   image_num+=1
           #   cv2.imwrite(r"C:\Users\37739\Documents\khuthon_2022\HandTracking\conf_images"+f"\{mlh.classification[0].score}"+'.jpg',image)
     # Flip the image horizontally for a selfie-view display.
+    # else:
+    #   LM_Q.append(None)
+    
+    # if len(LM_Q) < Q_NUM:
+    #   continue
+    if len(Queue) > Q_NUM:
+      q = Queue.pop(0)
+      if q is not None:
+          for k, (mlh, hand_landmarks) in enumerate(q):
+            mp_drawing.draw_landmarks(
+              image,
+              hand_landmarks,
+              mp_hands.HAND_CONNECTIONS,
+              mp_drawing_styles.get_default_hand_landmarks_style(),
+              mp_drawing_styles.get_default_hand_connections_style())
+
     cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
     if cv2.waitKey(5) & 0xFF == 27:
       break
