@@ -19,7 +19,8 @@ def ivector(vec):
   norm = (x**2+y**2+z**2)**(1/2)
   return [x/norm, y/norm, z/norm]
 
-IMAGE_FILES = [r'C:\Users\37739\Documents\khuthon_2022\HandTracking\static_images\left.jpg',]
+IMAGE_FILES = [r'C:\Users\37739\Documents\khuthon_2022\HandTracking\static_images\mid.jpg']
+              
               # r'C:\Users\37739\Documents\khuthon_2022\HandTracking\static_images\right.jpg',
               # r'C:\Users\37739\Documents\khuthon_2022\HandTracking\static_images\straight.jpg']
 with mp_hands.Hands(
@@ -79,7 +80,7 @@ with mp_hands.Hands(
           mp_drawing_styles.get_default_hand_landmarks_style(),
           mp_drawing_styles.get_default_hand_connections_style())
     cv2.imwrite(
-        '/tmp/annotated_image' + str(idx) + '.png', cv2.flip(annotated_image, 1))
+        r'C:\Users\37739\Documents\khuthon_2022\HandTracking\static_images'+"\\" + str(idx) + '.png', cv2.flip(annotated_image, 1))
     # Draw hand world landmarks.
     if not results.multi_hand_world_landmarks:
       continue
