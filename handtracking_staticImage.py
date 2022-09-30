@@ -50,7 +50,13 @@ with mp_hands.Hands(
       Wr2M3 = [hand_landmarks.landmark[M3].x-hand_landmarks.landmark[Wr].x,
               hand_landmarks.landmark[M3].y-hand_landmarks.landmark[Wr].y,
               hand_landmarks.landmark[M3].z-hand_landmarks.landmark[Wr].z]
-      print("vector",Wr2M0)
+      M02M3 = [hand_landmarks.landmark[M3].x-hand_landmarks.landmark[M0].x,
+              hand_landmarks.landmark[M3].y-hand_landmarks.landmark[M0].y,
+              hand_landmarks.landmark[M3].z-hand_landmarks.landmark[M0].z]
+      print("---vectors---")
+      print(Wr2M0)
+      print(Wr2M3)
+      print(M02M3)
       mp_drawing.draw_landmarks(
           annotated_image,
           hand_landmarks,
