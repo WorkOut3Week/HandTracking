@@ -8,7 +8,7 @@ mp_hands = mp.solutions.hands
 # For webcam input:
 cap = cv2.VideoCapture(0)
 with mp_hands.Hands(
-    max_num_hands=1,
+    max_num_hands=2,
     model_complexity=0,
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5) as hands:
@@ -25,7 +25,15 @@ with mp_hands.Hands(
     image.flags.writeable = False
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     results = hands.process(image)
-
+    # if results.multi_handedness is not None:
+    #   for mlh in results.multi_handedness:
+    #     print(mlh.classification[0].score)
+        # if mlh is not None and mlh.classification.label == "Right":
+          # print("yes")
+      # print(results.multi_handedness[0].classification) 
+      # if results.multi_handedness.
+      # cv2.imwrite(r"C:\Users\37739\Documents\khuthon_2022\HandTracking\conf_images"+f"\{}"+)
+    # print(results.multi_handedness)
     # Draw the hand annotations on the image.
     image.flags.writeable = True
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
@@ -38,10 +46,16 @@ with mp_hands.Hands(
             mp_hands.HAND_CONNECTIONS,
             mp_drawing_styles.get_default_hand_landmarks_style(),
             mp_drawing_styles.get_default_hand_connections_style())
+    if results.multi_hand_landmarks:
+      for k, (mlh, hand_landmarks) in enumerate(zip(results.multi_handedness, results.multi_hand_landmarks)):
+        print(k)
+        if  mlh.classification[0].label == "Right":
+          # print(hand_landmarks)
+          print(mlh.classification[0])
     # Flip the image horizontally for a selfie-view display.
     cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
     if cv2.waitKey(5) & 0xFF == 27:
       break
     etime =time.time()
-    print(etime-stime)
+    # print(etime-stime)
 cap.release()

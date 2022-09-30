@@ -10,10 +10,10 @@ Wr = 0
 M0 = 9
 M3 = 12
 
-IMAGESTACK = []
-LMSTACK = []
+# IMAGESTACK = []
+LM_Q = []
 
-STACK_NUM =5
+Q_NUM =10
 
 def ivector(vec):
   x,y,z = vec
@@ -47,15 +47,16 @@ with mp_hands.Hands(
     image.flags.writeable = True
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     
-    IMAGESTACK.append(image)
+    # IMAGESTACK.append(image)
 
     # LMSTACK.append(results.multi_hand_landmarks)
 
     if results.multi_hand_landmarks: # 손을 1개 이상 인식하면 True
       for hand_landmarks in results.multi_hand_landmarks:
-        LMSTACK.append(hand_landmarks)
+        # 손 2개면 조건문 추가
+        LM_Q.append(hand_landmarks)
     else:
-      LMSTACK.append(None)
+      LM_Q.append(None)
         # mp_drawing.draw_landmarks(
         #     image,
         #     hand_landmarks,
@@ -63,12 +64,12 @@ with mp_hands.Hands(
         #     mp_drawing_styles.get_default_hand_landmarks_style(),
         #     mp_drawing_styles.get_default_hand_connections_style())
     # Flip the image horizontally for a selfie-view display.
-    if len(IMAGESTACK) < STACK_NUM:
+    if len(LM_Q) < Q_NUM:
       continue
     else:
-      image = IMAGESTACK.pop(0)
-      hand_landmarks = LMSTACK.pop(0)
-      if LMSTACK is not None:
+      # image = IMAGESTACK.pop(0)
+      hand_landmarks = LM_Q.pop(0)
+      if hand_landmarks is not None:
         mp_drawing.draw_landmarks(
               image,
               hand_landmarks,
