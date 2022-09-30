@@ -8,6 +8,17 @@ Wr = 0
 M0 = 9
 M3 = 12
 
+# ToDo 1: stack 구현
+  # 전처리 1: vector 각도 계산 (방향성도 있어야 됨) -> outliear 1
+  # 전처리 2: tracking 실패 시 전처리 -> outlier 2
+  # 2.2 
+IMAGESTACK = []
+
+def ivector(vec):
+  x,y,z = vec
+  norm = (x**2+y**2+z**2)**(1/2)
+  return [x/norm, y/norm, z/norm]
+
 IMAGE_FILES = [r'C:\Users\37739\Documents\khuthon_2022\HandTracking\static_images\left.jpg',]
               # r'C:\Users\37739\Documents\khuthon_2022\HandTracking\static_images\right.jpg',
               # r'C:\Users\37739\Documents\khuthon_2022\HandTracking\static_images\straight.jpg']
@@ -57,6 +68,10 @@ with mp_hands.Hands(
       print(Wr2M0)
       print(Wr2M3)
       print(M02M3)
+      print("Ivec")
+      print(ivector(Wr2M0))
+      print(ivector(Wr2M3))
+      print(ivector(M02M3))
       mp_drawing.draw_landmarks(
           annotated_image,
           hand_landmarks,
