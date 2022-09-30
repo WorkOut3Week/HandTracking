@@ -5,6 +5,7 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
+image_num = 0
 # For webcam input:
 cap = cv2.VideoCapture(0)
 with mp_hands.Hands(
@@ -50,8 +51,13 @@ with mp_hands.Hands(
       for k, (mlh, hand_landmarks) in enumerate(zip(results.multi_handedness, results.multi_hand_landmarks)):
         print(k)
         if  mlh.classification[0].label == "Right":
+          pass
           # print(hand_landmarks)
-          print(mlh.classification[0])
+          # print(mlh.classification[0])
+          # if mlh.classification[0].score < 0.6:
+          #   assert image_num <10
+          #   image_num+=1
+          #   cv2.imwrite(r"C:\Users\37739\Documents\khuthon_2022\HandTracking\conf_images"+f"\{mlh.classification[0].score}"+'.jpg',image)
     # Flip the image horizontally for a selfie-view display.
     cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
     if cv2.waitKey(5) & 0xFF == 27:
